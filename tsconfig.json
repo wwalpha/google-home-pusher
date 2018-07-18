@@ -26,6 +26,10 @@
   "include": [
     "google-home-pusher.ts",
   ],
+  "files": [
+    "./typings/types.d.ts",
+    "./typings/external.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"
