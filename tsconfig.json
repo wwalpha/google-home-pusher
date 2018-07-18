@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "rootDirs": [
+      "./src",
+    ],
+    "outDir": "dist",
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "noImplicitAny": true,
+    "lib": [
+      "es5",
+      "es6",
+      "es2015.promise",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "removeComments": true,
+    "allowJs": true,
+    "strictNullChecks": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false
+  },
+  "compileOnSave": true,
+  "include": [
+    "google-home-pusher.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
