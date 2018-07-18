@@ -1,0 +1,26 @@
+{
+  "name": "google-home-pusher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "google-home-pusher.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wwalpha",
+  "keywords": [
+    "google home",
+    "notifications",
+    "notifier"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "castv2-client": "^1.2.0",
+    "google-tts-api": "0.0.2",
+    "multicast-dns": "^7.0.0"
+  },
+  "devDependencies": {
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.9.2",
+    "typescript": "^2.9.2"
+  }
+}
