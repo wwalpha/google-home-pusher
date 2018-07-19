@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const multicast_dns_1 = require("multicast-dns");
 const castv2_client_1 = require("castv2-client");
-const google_tts_api_1 = require("google-tts-api");
+const googletts = require("google-tts-api");
 let language;
 let deviceAddress;
 let deviceName;
@@ -40,7 +40,6 @@ const initAddress = () => {
         }
         mdns.destroy();
     });
-    console.log('start query');
     mdns.query({
         questions: [{
                 name: '_googlecast._tcp',
@@ -48,7 +47,6 @@ const initAddress = () => {
                 class: 'IN',
             }],
     });
-    console.log('end query');
 };
 const onDeviceUp = (url, host) => new Promise((resolve, reject) => {
     const client = new castv2_client_1.Client();
@@ -76,7 +74,7 @@ const onDeviceUp = (url, host) => new Promise((resolve, reject) => {
     });
 });
 const playSpeech = (text, host) => __awaiter(this, void 0, void 0, function* () {
-    const url = yield google_tts_api_1.default(text, language, 1);
+    const url = yield googletts(text, language, 1);
     yield onDeviceUp(url, host);
 });
 exports.notify = (message) => __awaiter(this, void 0, void 0, function* () {

@@ -1,10 +1,10 @@
 import multicastDNS from 'multicast-dns';
-// const multicastDNS = require('multicast-dns');
 import { Client, DefaultMediaReceiver } from 'castv2-client';
+import * as googletts from 'google-tts-api';
+// const multicastDNS = require('multicast-dns');
 // const Client = require('castv2-client').Client;
 // const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
 // const googletts = require('google-tts-api');
-import googletts from 'google-tts-api';
 
 let language: string;
 let deviceAddress: string;
