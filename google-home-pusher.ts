@@ -1,11 +1,11 @@
-import multicastDNS from 'multicast-dns';
-import { Client, DefaultMediaReceiver } from 'castv2-client';
-import googletts from 'google-tts-api';
+const multicastDNS = require('multicast-dns');
+const Client = require('castv2-client').Client;
+const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
+const googletts = require('google-tts-api');
 
 let language: string;
 let deviceAddress: string;
 let deviceName: string;
-let languageAccent: string = 'us';
 
 export const device = (name: string, lang: string = 'en') => {
   deviceName = name;
@@ -19,17 +19,14 @@ export const ip = (ip: string, lang: string = 'en') => {
   return this;
 };
 
-// https://cloud.google.com/speech-to-text/docs/languages
-export const accent = (accent: string = 'us') => {
-  languageAccent = accent;
-  return this;
-};
-
-const initAddress = () => {
+export const initAddress = () => {
   const mdns = multicastDNS();
 
-  mdns.on('response', (res: any) => {
+  console.log(mdns);
+  mdns.on('response', (res: any, rinfo: any) => {
     console.log('response:', res);
+    console.log('rinfo:', rinfo);
+
     const { additionals = [] } = res;
 
     const device = additionals.find((item: any) => item.type === 'A' && item.name === `${deviceName}.local`);
@@ -43,17 +40,30 @@ const initAddress = () => {
     mdns.destroy();
   });
 
+  mdns.on('query', (packet: any, rinfo: any) => {
+    console.log('on query');
+    console.log(packet);
+    console.log(rinfo);
+  });
+  console.log('start query');
+  // mdns.query({
+  //   questions: [],
+  // });
+  // mdns.query();
   mdns.query({
     questions: [{
-      name: '_googlecast._tcp.local',
+      name: '_googlezone._tcp.local',
       type: 'PTR',
+      class: 'IN',
     }],
   });
+  console.log('end query');
 };
 
-const onDeviceUp = (url: string, host: string): Promise<any> => new Promise((resolve, reject) => {
+export const onDeviceUp = (url: string, host: string): Promise<any> => new Promise((resolve, reject) => {
   const client = new Client();
 
+  console.log(client);
   client.connect(host, () => {
     console.log('connected, launching app ...');
 
@@ -84,6 +94,7 @@ const onDeviceUp = (url: string, host: string): Promise<any> => new Promise((res
   });
 
   client.on('error', (err: any) => {
+    console.log('error', err);
     client.close();
     reject(err);
   });
