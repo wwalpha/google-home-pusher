@@ -1,7 +1,10 @@
-const multicastDNS = require('multicast-dns');
-const Client = require('castv2-client').Client;
-const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
-const googletts = require('google-tts-api');
+import multicastDNS from 'multicast-dns';
+// const multicastDNS = require('multicast-dns');
+import { Client, DefaultMediaReceiver } from 'castv2-client';
+// const Client = require('castv2-client').Client;
+// const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
+// const googletts = require('google-tts-api');
+import googletts from 'google-tts-api';
 
 let language: string;
 let deviceAddress: string;
@@ -13,13 +16,13 @@ export const device = (name: string, lang: string = 'en') => {
   return this;
 };
 
-export const ip = (ip: string, lang: string = 'en') => {
+export const ip = (ip: string, lang: string = 'ja') => {
   deviceAddress = ip;
   language = lang;
   return this;
 };
 
-export const initAddress = () => {
+const initAddress = () => {
   const mdns = multicastDNS();
 
   console.log(mdns);
@@ -40,33 +43,20 @@ export const initAddress = () => {
     mdns.destroy();
   });
 
-  mdns.on('query', (packet: any, rinfo: any) => {
-    console.log('on query');
-    console.log(packet);
-    console.log(rinfo);
-  });
-  console.log('start query');
-  // mdns.query({
-  //   questions: [],
-  // });
-  // mdns.query();
   mdns.query({
     questions: [{
-      name: '_googlezone._tcp.local',
+      name: '_googlecast._tcp',
       type: 'PTR',
       class: 'IN',
     }],
   });
-  console.log('end query');
 };
 
-export const onDeviceUp = (url: string, host: string): Promise<any> => new Promise((resolve, reject) => {
+const onDeviceUp = (url: string, host: string): Promise<any> => new Promise((resolve, reject) => {
   const client = new Client();
 
-  console.log(client);
   client.connect(host, () => {
-    console.log('connected, launching app ...');
-
+    console.log('connected');
     client.launch(DefaultMediaReceiver, (err: any, player: any) => {
       if (err) {
         reject(err);
@@ -79,22 +69,15 @@ export const onDeviceUp = (url: string, host: string): Promise<any> => new Promi
         streamType: 'BUFFERED',
       };
 
-      player.on('status', (status: any) => {
-        // ????
-        console.log('status broadcast playerState=%s', status.playerState);
-      });
-
       player.load(media, { autoplay: true }, (err: any, status: any) => {
-        console.log('media loaded playerState=%s', status.playerState);
-        // ????
-        client.close();
         resolve();
+        client.close();
       });
     });
   });
 
   client.on('error', (err: any) => {
-    console.log('error', err);
+    // console.log('error', err);
     client.close();
     reject(err);
   });
@@ -103,7 +86,7 @@ export const onDeviceUp = (url: string, host: string): Promise<any> => new Promi
 const playSpeech = async (text: string, host: string) => {
   const url = await googletts(text, language, 1);
 
-  await onDeviceUp(host, url);
+  await onDeviceUp(url, host);
 };
 
 /** Play google speech */

@@ -2,19 +2,17 @@
   "name": "google-home-pusher",
   "version": "1.0.0",
   "description": "",
-  "main": "google-home-pusher.ts",
+  "main": "dist/google-home-pusher",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "wwalpha",
   "keywords": [
     "google home",
-    "notifications",
-    "notifier"
+    "notifications"
   ],
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/text-to-speech": "^0.3.0",
     "castv2-client": "^1.2.0",
     "google-tts-api": "0.0.2",
     "multicast-dns": "^7.0.0"
